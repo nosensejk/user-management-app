@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const pool = require("./db");
-const sendVerificationEmail = require("./email");
+
 
 const app = express();
 app.use(express.json());
@@ -56,9 +56,6 @@ app.post("/register", async (req, res) => {
       [name, email, hashed],
     );
 
-    // const verificationToken = jwt.sign({ id: result.insertId }, JWT_SECRET, { expiresIn: '1d' });
-    // sendVerificationEmail(email, verificationToken);
-
     res.json({
       success: true,
       message:
@@ -72,20 +69,6 @@ app.post("/register", async (req, res) => {
     console.log(err);
   }
   
-});
-
-app.get("/verify-email/:token", async (req, res) => {
-  const { token } = req.params;
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    await pool.query(
-      'UPDATE users SET status = "active" WHERE id = ? AND status != "blocked"',
-      [decoded.id],
-    );
-    res.send("Email подтвержден. Теперь вы можете войти.");
-  } catch {
-    res.send("Неверный или просроченный токен.");
-  }
 });
 
 app.post("/login", async (req, res) => {
