@@ -27,16 +27,9 @@ async function checkAuth(req, res, next) {
             [decoded.id]
         );
 
-        // пользователь удалён
-        if (!rows.length) {
-            res.clearCookie('token');
-            return res.redirect('/index.html');
-        }
-
         const user = rows[0];
 
-        // пользователь заблокирован
-        if (user.status === 'blocked') {
+        if (user.status === 'blocked' || !rows.length) {
             res.clearCookie('token');
             return res.redirect('/index.html');
         }

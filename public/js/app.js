@@ -5,18 +5,21 @@ $(document).ready(function () {
     );
   }
 
+
   function getUniqIdValue(prefix = "id") {
     return prefix + "_" + Math.random().toString(36).substr(2, 9);
   }
 
   function formatDate(dateString) {
-    return (dateString) ? new Date(dateString).toLocaleString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }) : '';
+    return dateString
+      ? new Date(dateString).toLocaleString("en-US", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "";
   }
 
   async function loadUsers() {
